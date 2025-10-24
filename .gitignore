@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Streamlit cache and logs
+.streamlit/
+logs/
+cache/
+data/*.csv  # Optional: if logs are user-generated and not needed in repo
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# environment file
+.env
+
+# logs file will be created by the user on runtime, no need to push
+logs.csv
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
+
+# Jupyter / Notebooks (if any)
+.ipynb_checkpoints/
+
+# Deployment files (auto-generated)
+*.log
+*.bak
+
+# Misc
+*.zip
+*.tar.gz
