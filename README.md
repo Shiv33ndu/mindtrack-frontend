@@ -2,6 +2,8 @@
 
 This is the Streamlit frontend for the MindTrack wellness and habit tracker.
 
+**MindTrack Ai** is a backend service for a personal mental health tracker that helps users log daily habits, track moods, and get AI-based mood predictions from journal texts.
+
 ---
 
 ## Project Structure
@@ -59,3 +61,11 @@ APP_URL = "streamlit app urk"
 
 GEMINI_API_KEY = 'your gemini access token'
 ```
+
+## Contact
+
+For any questions regarding this backend:
+- **Developer**: Shivendu Kumar, Atharv Mishra
+- **Email**: shiv.end.you@gmail.com, mishra17atharv@gmail.com
+
+---
