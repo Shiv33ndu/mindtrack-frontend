@@ -14,19 +14,19 @@ load_dotenv()
 
 # --- Page Config ---
 st.set_page_config(
-    page_title="MindTrack Dashboard",
+    page_title="Progress Dashboard",
     page_icon="📊",
     layout="wide",
 )
 
 # --- HIDE STREAMLIT'S DEFAULT PAGE NAVIGATION ---
-st.markdown("""
-    <style>
-        [data-testid="stSidebarNavItems"] {
-            display: none;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+# st.markdown("""
+#     <style>
+#         [data-testid="stSidebarNavItems"] {
+#             display: none;
+#         }
+#     </style>
+#     """, unsafe_allow_html=True)
 
 # --- Backend/Data URLS ---
 BACKEND_URL = os.getenv("BACKEND_URL")
@@ -46,7 +46,7 @@ with st.sidebar:
     # )
     # st.caption("Calming audio (press play)")
 
-    st.page_link("streamlit_app.py", label="Progress Dashboard", icon="📊")
+    # st.page_link("streamlit_app.py", label="Progress Dashboard", icon="📊")
     st.page_link("pages/1_Daily_Log.py", label="Daily Log", icon="✏️")
     st.page_link("pages/3_AI_Insights.py", label="AI Insights", icon="✨")
     st.page_link("pages/0_Welcome.py", label="About", icon="👋")
@@ -123,7 +123,7 @@ def calculate_streaks(active_dates_list):
             temp_date -= timedelta(days=1)
     
     # If neither today nor yesterday is logged, current_streak remains 0
-    
+       
     return current_streak, longest_streak
 
 
