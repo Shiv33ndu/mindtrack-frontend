@@ -5,3 +5,9 @@ requests
 plotly
 matplotlib
 calplot
+dotenv
+
+#agent related libs
+langchain-core
+langchain-google-genai
+google-generativeai

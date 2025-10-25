@@ -4,12 +4,16 @@ import requests
 import datetime
 import os
 from PIL import Image
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # --- Configuration ---
-BACKEND_URL = os.environ.get("BACKEND_URL", "http://127.0.0.1:5000")
+BACKEND_URL = os.getenv("BACKEND_URL")
 LOG_ENDPOINT = f"{BACKEND_URL}/log"
 LOCAL_LOG_FILE = "data/logs.csv"
 
+print(f"BACKEND_URL : {BACKEND_URL}")
 
 # ----- To hide default page show -----
 st.markdown("""
@@ -147,12 +151,12 @@ with st.form("daily_log_form"):
 
     st.divider()
 
-    st.subheader("Mood & Journal")
-    mood = st.selectbox(
-        "How are you feeling today?",
-        ("😄 Happy", "😐 Neutral", "😔 Sad", "😠 Angry", "😌 Calm"),
-        index=0
-    )
+    st.subheader("Write your Journal, AI will auto predict your mood")
+    # mood = st.selectbox(
+    #     "How are you feeling today?",
+    #     ("😄 Happy", "😐 Neutral", "😔 Sad", "😠 Angry"),
+    #     index=0
+    # )
     
     journal = st.text_area(
         "Write a short journal entry (optional):",
@@ -164,26 +168,45 @@ with st.form("daily_log_form"):
 
 # --- Form Submission Logic ---
 if submitted:
-    # Prepare log data
-    log_data = {
-        "date": today_str,
-        "water": 1 if water else 0,
-        "reading": 1 if reading else 0,
-        "meditation": 1 if meditation else 0,
-        "exercise": 1 if exercise else 0,
-        "mood": mood.split(" ")[1], # Get the mood text (e.g., "Happy")
-        "journal": journal
-    }
+    # 1. Validation
+    if not journal.strip():
+        st.warning("Please write a journal entry. The AI needs it to analyze your mood.")
+    else:
+        try:
+            with st.spinner("AI is analyzing your mood..."):
+                # 2. Call Backend for Mood Prediction
+                predict_payload = {"text": journal}
+                predict_response = requests.post(f"{BACKEND_URL}/predict_mood", json=predict_payload, timeout=20)
+                predict_response.raise_for_status() # Error if API fails
+                
+                prediction_data = predict_response.json()
+                predicted_mood = prediction_data.get("mood", "Neutral") # predict mood
+                
+            placeholder = st.empty()
+            placeholder.success(f"AI analyzed your mood as: **{predicted_mood}**. Saving log...")
 
-    with st.spinner("Saving your log..."):
-        # Try backend first
-        if not save_log_to_backend(log_data):
-            # Fallback to local
-            if save_log_locally(log_data):
-                st.success("Log saved locally! (Backend not reachable)")
-            else:
-                st.error("Critical error! Could not save log to backend or locally.")
-        else:
-            st.success("Log saved successfully to the backend!")
+            # 3. Prepare Full Log Data
+            log_date_str = datetime.date.today().isoformat()
+            new_log_data = {
+                "date": log_date_str,
+                "exercise": 1 if exercise else 0,
+                "water": 1 if water else 0,
+                "reading": 1 if reading else 0,
+                "meditation": 1 if meditation else 0,
+                "mood": predicted_mood,
+                "journal_text": journal
+            }
 
-    st.balloons()
+            # 4. Send to Backend /log endpoint
+            with st.spinner("Saving to backend..."):
+                log_response = requests.post(f"{BACKEND_URL}/log", json=new_log_data, timeout=10)
+                log_response.raise_for_status()
+                # Use success toast for a non-blocking final message
+                placeholder.success(f"Successfully saved log for {log_date_str}!", icon="🎉")
+
+        except requests.RequestException as e:
+            st.error(f"**Save Failed!**\n\nCould not connect to the backend: {e}\n\n**Please try submitting again.**")
+        except Exception as e:
+            st.error(f"An unexpected error occurred: {e}. Please try again.")
+
+    
