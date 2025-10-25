@@ -1,9 +1,35 @@
 import streamlit as st
 
 # --- Page Configuration ---
+
+# ----- To hide default page show -----
+st.markdown("""
+    <style>
+        [data-testid="stSidebarNavItems"] {
+            display: none;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+# ---------- Sidebar content Navigation ----------
+with st.sidebar:
+
+    st.title("🧠 MindTrack")
+    st.markdown("Your personal wellness and habit tracker.")
+
+    # Updated navigation links
+    st.page_link("streamlit_app.py", label="Progress Dashboard", icon="📊")
+    st.page_link("pages/1_Daily_Log.py", label="Daily Log", icon="✍️")
+    st.page_link("pages/3_AI_Insights.py", label="AI Insights", icon="✨")
+    st.page_link("pages/0_Welcome.py", label="About", icon="🏠") # New welcome page
+
+# --- Page Configuration ---
+
 st.set_page_config(
-    page_title="Welcome - MindTrack",
+    page_title="MindTrack - About",
     page_icon="🏠",
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 # --- Welcome Page Content ---

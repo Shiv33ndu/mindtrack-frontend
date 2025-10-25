@@ -10,8 +10,39 @@ BACKEND_URL = os.environ.get("BACKEND_URL", "http://127.0.0.1:5000")
 LOG_ENDPOINT = f"{BACKEND_URL}/log"
 LOCAL_LOG_FILE = "data/logs.csv"
 
+
+# ----- To hide default page show -----
+st.markdown("""
+    <style>
+        [data-testid="stSidebarNavItems"] {
+            display: none;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+# ---------- Sidebar content Navigation ----------
+with st.sidebar:
+
+    st.title("🧠 MindTrack")
+    st.markdown("Your personal wellness and habit tracker.")
+
+    # Updated navigation links
+    st.page_link("streamlit_app.py", label="Progress Dashboard", icon="📊")
+    st.page_link("pages/1_Daily_Log.py", label="Daily Log", icon="✍️")
+    st.page_link("pages/3_AI_Insights.py", label="AI Insights", icon="✨")
+    st.page_link("pages/0_Welcome.py", label="About", icon="🏠") # New welcome page
+
+# --- Page Configuration ---
+
+st.set_page_config(
+    page_title="MindTrack - Daily Log",
+    page_icon="✍️",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 # --- Helper to load images ---
-@st.cache_data
+# @st.cache_data
 def load_image(path):
     """Safely loads an image, returns None if not found."""
     try:
@@ -65,6 +96,7 @@ today = datetime.date.today()
 today_str = today.strftime("%Y-%m-%d")
 
 st.info(f"Logging for: **{today_str}**")
+
 
 # --- Form ---
 with st.form("daily_log_form"):
@@ -136,8 +168,8 @@ if submitted:
     log_data = {
         "date": today_str,
         "water": 1 if water else 0,
-        "read": 1 if reading else 0,
-        "meditate": 1 if meditation else 0,
+        "reading": 1 if reading else 0,
+        "meditation": 1 if meditation else 0,
         "exercise": 1 if exercise else 0,
         "mood": mood.split(" ")[1], # Get the mood text (e.g., "Happy")
         "journal": journal
