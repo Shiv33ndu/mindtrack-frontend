@@ -20,13 +20,13 @@ st.set_page_config(
 )
 
 # --- HIDE STREAMLIT'S DEFAULT PAGE NAVIGATION ---
-# st.markdown("""
-#     <style>
-#         [data-testid="stSidebarNavItems"] {
-#             display: none;
-#         }
-#     </style>
-#     """, unsafe_allow_html=True)
+st.markdown("""
+    <style>
+        [data-testid="stSidebarNavItems"] {
+            display: none;
+        }
+    </style>
+    """, unsafe_allow_html=True)
 
 # --- Backend/Data URLS ---
 BACKEND_URL = os.getenv("BACKEND_URL")
@@ -46,9 +46,9 @@ with st.sidebar:
     # )
     # st.caption("Calming audio (press play)")
 
-    # st.page_link("streamlit_app.py", label="Progress Dashboard", icon="📊")
-    st.page_link("pages/1_Daily_Log.py", label="Daily Log", icon="✏️")
-    st.page_link("pages/3_AI_Insights.py", label="AI Insights", icon="✨")
+    st.page_link("streamlit_app.py", label="Progress Dashboard", icon="📊")
+    st.page_link("pages/1_Daily_log.py", label="Daily Log", icon="✏️")
+    st.page_link("pages/3_AI_insights.py", label="AI Insights", icon="✨")
     st.page_link("pages/0_Welcome.py", label="About", icon="👋")
 
     if st.button("Reset to Sample Data", help="Deletes all user logs from the backend and reloads sample data.", type="secondary"):

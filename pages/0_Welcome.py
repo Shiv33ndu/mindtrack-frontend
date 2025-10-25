@@ -19,9 +19,9 @@ with st.sidebar:
 
     # Updated navigation links
     st.page_link("streamlit_app.py", label="Progress Dashboard", icon="📊")
-    st.page_link("pages/1_Daily_Log.py", label="Daily Log", icon="✍️")
-    st.page_link("pages/3_AI_Insights.py", label="AI Insights", icon="✨")
-    st.page_link("pages/0_Welcome.py", label="About", icon="🏠") # New welcome page
+    st.page_link("pages/1_Daily_log.py", label="Daily Log", icon="✏️")
+    st.page_link("pages/3_AI_insights.py", label="AI Insights", icon="✨")
+    st.page_link("pages/0_Welcome.py", label="About", icon="👋")
 
 # --- Page Configuration ---
 
